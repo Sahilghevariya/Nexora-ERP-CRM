@@ -1,0 +1,20 @@
+{
+  "name": "mini-erp-crm-operations-portal",
+  "version": "1.0.0",
+  "description": "Full-stack Mini ERP + CRM Portal monorepo containing frontend (React SPA) and backend (Express API)",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
+  "keywords": [
+    "erp",
+    "crm",
+    "express",
+    "react",
+    "postgresql",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC"
+}
