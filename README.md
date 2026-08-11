@@ -1,200 +1,241 @@
 # Mini ERP + CRM Operations Portal
+### *Full-Stack Developer Case-Study Submission*
 
-A complete developer case study of a full-stack **Mini ERP + CRM Operations Suite** designed to manage CRM client tracking, product inventories, manual warehouse stock adjustments, and atomic Sales Challan transaction processing.
+An enterprise-grade, role-based internal operations portal designed to solve core business problems in Customer Relationship Management (CRM), Catalog Management, Warehouse Inventories, and Sales Challan transactional workflow processing.
 
 ---
 
-## ⚡ Role-Based Authentication Credentials
+## 📋 1. Business Problem & Project Overview
 
-For easy local testing, use the following credentials. All passwords are set to `password123`.
+Many growing retail and wholesale businesses struggle with disconnected spreadsheets or siloed applications when tracking leads, managing warehouse stocks, and drafting sales orders. This fragment causes:
+- **Inventory Discrepancy**: Orders are confirmed when stock is physically unavailable, leading to stock deficit friction.
+- **Race Conditions**: Parallel billing clerks decrementing stock concurrently, causing negative inventory totals.
+- **Historical Loss**: Invoices changing retrospectively when customer metadata or product prices change.
 
-| Role | Username / Email | Password | Primary Capabilities |
+This **Mini ERP + CRM Portal** solves these issues through a decoupled, multi-role web application utilizing atomic row locks, transactional database safeguards, custom PDF invoice generators, and a responsive operations dashboard.
+
+---
+
+## ⚡ 2. User Roles & Test Credentials
+
+For easy local testing, the database seeder creates four default accounts matching the system's role matrices. Passwords are set to `password123`.
+
+| Role | Test Email | Password | Primary Capability |
 | :--- | :--- | :--- | :--- |
-| **System Admin** | `admin@company.com` | `password123` | Full system access, CRUD users, CRUD customers/products, cancel challans. |
-| **Sales Representative** | `sales@company.com` | `password123` | Manage client leads, create/edit CRM details, generate/confirm Challan drafts. |
-| **Warehouse Manager** | `warehouse@company.com` | `password123` | Adjust catalog products, manual inventory adjustments (IN/OUT logging). |
-| **Accountant** | `accounts@company.com` | `password123` | Financial auditing, cancel confirmed challans to trigger automated restock. |
+| **System Admin** | `admin@company.com` | `password123` | Full access, CRUD catalogs, delete records, cancel/restock challans. |
+| **Sales Rep** | `sales@company.com` | `password123` | CRM Lead tracking, create draft challans, execute draft confirmations. |
+| **Warehouse Mgr** | `warehouse@company.com` | `password123` | Manage product locations, manual adjustments (Stock IN/OUT ledger). |
+| **Accountant** | `accounts@company.com` | `password123` | Read-only catalogs, access financial metrics, cancel invoices to trigger automated restock. |
+
+### 🔒 Operational Permission Matrix
+
+| Feature Module | Admin | Sales | Warehouse | Accounts |
+| :--- | :---: | :---: | :---: | :---: |
+| **Overview Dashboard Stats** | ✅ (Full + Revenue) | ✅ (No Revenue) | ❌ | ✅ (Full + Revenue) |
+| **CRM Directory: Read** | ✅ | ✅ | ❌ | ✅ |
+| **CRM Directory: Write** | ✅ | ✅ | ❌ | ❌ |
+| **Catalog Products: Read** | ✅ | ✅ | ✅ | ✅ |
+| **Catalog Products: Write** | ✅ | ❌ | ✅ | ❌ |
+| **Manual Stock Intake/Deduct** | ✅ | ❌ | ✅ | ❌ |
+| **Challans: Create Draft/Confirm**| ✅ | ✅ | ❌ | ❌ |
+| **Challans: Cancel & Restock** | ✅ | ❌ | ❌ | ✅ |
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ 3. Technology Stack & Architecture
 
-The project is structured as a decoupled monorepo containing a RESTful API Backend and an SPA Frontend client:
+### Frontend Client
+- **Framework**: React 18 + Vite + TypeScript (Single-Page Application).
+- **Styling**: Vanilla CSS variable design system featuring dark slate glassmorphic panels and responsive wrappers.
+- **State & Router**: React Router v6 + Protected Route context wrappers.
 
+### Backend REST API
+- **Runtime**: Node.js + Express + TypeScript.
+- **Database ORM**: Prisma ORM v6.
+- **Validation**: Zod (schema type safety checks).
+- **Auth**: JWT (JSON Web Tokens) + Bcrypt password hashing.
+
+### Decoupled Repository Structure
 ```
 Mini ERP/
-├── backend/            # Express, Node.js, TypeScript, & Prisma ORM
-│   ├── src/            # Layered controllers, routes, and services
-│   └── prisma/         # Database models & seeding script
-└── frontend/           # Vite, React, TypeScript SPA
-    ├── src/            # Context states, custom hooks, and pages
-    └── src/index.css   # Unified visual design tokens
+├── backend/            # Layered Express Node.js application
+│   ├── src/
+│   │   ├── __tests__/  # Automated Jest Integration Test suites
+│   │   ├── controllers/# Route handlers (Auth, CRM, Stock, Challan, Dashboard)
+│   │   ├── middlewares/# Session auth, RBAC guards, schema validation
+│   │   └── routes/     # Route version mapping indexes
+│   └── prisma/         # PostgreSQL schema structure & seed scripts
+└── frontend/           # React client application
+    ├── src/
+    │   ├── components/ # Core sidebar & protected routes
+    │   ├── context/    # User authentication provider states
+    │   └── pages/      # Workspace modules (CRM, Inventory, Challans, etc.)
 ```
 
-- **Frontend**: Built on **React 18** and **Vite** for high performance. The user interface leverages custom CSS variables in a comprehensive **Vanilla CSS** design system.
-- **Backend**: Built on **Node.js** and **Express** with type safety enforced through **TypeScript**. **Zod** is used for double-barrier schema validations on incoming requests.
-- **Database**: Powered by **PostgreSQL** with schema migrations managed natively using **Prisma ORM**.
+---
+
+## 🗄️ 4. Database Overview & Schema Entities
+
+The system uses **PostgreSQL** with 6 primary data entities defined in [schema.prisma](file:///c:/Users/Jenish/Desktop/Mini%20ERP/backend/prisma/schema.prisma):
+
+```
++------------+        +--------------+        +---------------+
+|    User    |        |   Customer   |        |    Product    |
++------------+        +--------------+        +---------------+
+| id (UUID)  |        | id (UUID)    |        | id (UUID)     |
+| email      |        | name         |        | name          |
+| password   |        | mobile       |        | sku (Unique)  |
+| role       |        | type (Enum)  |        | currentStock  |
+| isActive   |        | status (Enum)|        | minAlertQty   |
++------------+        +--------------+        +---------------+
+                            |                        |
+                            v                        v
++------------------------------------+        +---------------------+
+|            SalesChallan            |        |    StockMovement    |
++------------------------------------+        +---------------------+
+| id (UUID)                          |        | id (UUID)           |
+| challanNumber (Unique)             |        | quantity            |
+| customerSnapshot (JSONB)           |        | type (IN/OUT Enum)  |
+| status (Draft/Confirmed/Cancelled) |        | reason              |
++------------------------------------+        +---------------------+
+                            |
+                            v
+              +----------------------------+
+              |      SalesChallanItem      |
+              +----------------------------+
+              | id (UUID)                  |
+              | quantity                   |
+              | productSnapshot (JSONB)    |
+              +----------------------------+
+```
+
+*Note: The customer and product information inside Challans is cloned as JSONB snapshots at the moment of invoice creation. This guarantees audit integrity, safeguarding historical data against future deletions or detail updates.*
 
 ---
 
-## 🔒 Sales Challan Transaction Engine (Core Business Rules)
+## 🧾 5. Sales Challan Workflow & Inventory Rules
 
-Challan confirmations use atomic SQL transactions to prevent race conditions (like double-orders or negative stock levels):
+```
+[Create Challan] 
+      │
+      ▼
+[Status: DRAFT] ──────── (Optional edit details or add items)
+      │
+      ▼
+[Click: CONFIRM]
+      │
+      ├─► Row-Lock Products (SELECT FOR UPDATE)
+      ├─► Verify Stocks Availability
+      │         │
+      │         ├───► [Insufficient Stock] ─► Rollback Transaction ─► Retain Draft
+      │         │
+      │         └───► [Stock Available]
+      │                     │
+      │                     ├───► Decrement Catalog Inventory
+      │                     ├───► Log StockMovement (OUT)
+      │                     └───► Status: CONFIRMED
+      │
+      ▼
+[Click: CANCEL] (Only Admin / Accounts)
+      │
+      ├───► Restock Catalog Inventory (Increment)
+      ├───► Log StockMovement (IN)
+      └───► Status: CANCELLED
+```
 
-1. A Challan is initially created in **`DRAFT`** status. At this stage, stock levels are unaffected.
-2. Confirming a Challan opens a database transaction block:
-   - For every line item, the corresponding catalog row is fetched using a locking select statement (`FOR UPDATE` row lock).
-   - The transaction verifies that requested quantities do not exceed available current stock.
-   - If stock is insufficient, the transaction is immediately **rolled back**, and the API yields a detailed `400 Bad Request` listing exact product deficits.
-   - If stock is sufficient, the inventory is decremented, corresponding `StockMovement` ledger logs (MovementType: `OUT`) are written, and the Challan status becomes `CONFIRMED`.
-3. If an Accountant or Admin **cancels** a confirmed Challan, a secondary transaction reverts the counts, logs replenishment `StockMovement` records (MovementType: `IN`), and marks the status as `CANCELLED`.
+### Core Inventory Business Rules:
+1. **Transaction Integrity**: Every stock change must create a ledger audit movement.
+2. **Double Confirmation Prevention**: Confirmed or Cancelled challans cannot be re-confirmed.
+3. **No Negative Stock**: Catalog stock can never drop below zero. Stock shortfalls during invoice execution rollback the entire SQL transaction (no partial database changes).
 
 ---
 
-## 🛠️ Local Installation & Launch
+## ⚙️ 6. Local Setup & Running
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- PostgreSQL database server (local or cloud-hosted)
+- Node.js (v18+)
+- PostgreSQL Server
 
-### 1. Database & Backend Configuration
-1. Open the `/backend` folder.
-2. Create your `.env` file from the template:
-   ```bash
-   cp .env.example .env
-   ```
-3. Update the `DATABASE_URL` in `.env` with your PostgreSQL server connection string:
+### Backend Setup
+1. Enter the `/backend` folder.
+2. Setup environment credentials (`cp .env.example .env`):
    ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/minierp?schema=public"
+   PORT=5000
+   DATABASE_URL="postgresql://postgres:postgres123@localhost:5432/minierp?schema=public"
+   JWT_SECRET="super_secure_token_secret_for_operational_erp_portal_2026"
    ```
-4. Install dependencies:
+3. Install packages and generate Prisma Client:
    ```bash
    npm install
+   npx prisma generate
    ```
-5. Apply database migrations to construct tables:
+4. Push database tables and seed initial records:
    ```bash
    npx prisma db push
-   ```
-6. Run the database seed script to populate default accounts, products, and clients:
-   ```bash
    npm run db:seed
    ```
-7. Start the API hot-reload developer server:
+5. Start in Development mode:
    ```bash
    npm run dev
    ```
-   *The backend will boot on port `5000` (http://localhost:5000).*
 
-### 2. Frontend Client Launch
-1. Open the `/frontend` folder.
+### Frontend Setup
+1. Enter the `/frontend` folder.
 2. Install client dependencies:
    ```bash
    npm install
    ```
-3. Start the Vite server:
+3. Boot development VITE server:
    ```bash
    npm run dev
    ```
-   *Vite will start the client interface (typically on http://localhost:5173).*
+   *Vite client starts on http://localhost:5173.*
 
 ---
 
-## 📔 API Documentation
-For cURL payload details and path maps, see the [api_test_guide.md](file:///c:/Users/Jenish/Desktop/Mini%20ERP/api_test_guide.md) file.
+## 🐳 7. Optional Bonus Features Implemented
 
-## 🐳 Docker Compose Orchestration Setup
+1. **Docker Compose Support**: Orchestrates PostgreSQL, API Server, and Client packages. Run `docker compose up --build -d` to spin up the entire stack.
+2. **Interactive Postman API Tests**: Packaged [Postman Collection JSON](file:///c:/Users/Jenish/Desktop/Mini%20ERP/Mini_ERP_Postman_Collection.json) executing automated tests and saving auth tokens inside environment variables.
+3. **Nginx Reverse Proxy Server**: Binds ports and proxies `/api/*` requests internally to decouple client routes and defeat CORS blockers.
+4. **PDF Invoice Export**: Leverages custom file layouts (`pdfkit`) to generate download links for Sales Challan invoices.
 
-A complete orchestration environment is packaged in the root directory. To build and start the entire stack (PostgreSQL database server + backend TypeScript API + frontend Nginx server):
+---
 
-### 1. Build and Start Services
-Execute the compose command from the root directory:
+## 🧪 8. Test Execution Sweep
+
+Integration tests are implemented using **Jest** and **Supertest** covering CRM, Stock adjustments, and database transaction locking:
 ```bash
-docker compose up --build -d
+# Run backend tests
+cd backend
+npm run test
 ```
-*This command:*
-- Boots up a PostgreSQL database container.
-- Waits for database health checks to succeed.
-- Builds the backend API, automatically runs Prisma schema pushes, seeds initial accounts/products/clients, and starts the Express server on port `5000`.
-- Builds the frontend, compiling production assets mapped to an internal Nginx service exposed on port `8080`.
-
-### 2. View Interface & Logs
-- **Frontend SPA Client**: Access [http://localhost:8080](http://localhost:8080) (Nginx reverse proxies `/api` queries to the backend automatically).
-- **Backend API Docs**: Access [http://localhost:5000/api/v1](http://localhost:5000/api/v1).
-- **View logs**: Run `docker compose logs -f` to watch logs.
-
-### 3. Stop Services
-To shut down containers and tear down network attachments:
-```bash
-docker compose down
-```
-To also destroy the persistent database volume storage and start fresh:
-```bash
-docker compose down -v
-```
+*Results: 33/33 tests passing with exit code 0.*
 
 ---
 
-## 🚀 Production Deployment Guide
+## 🚀 9. Cloud Production Deployment
 
-Follow these steps to deploy the application in a cloud environment:
+### Database (Neon / Supabase)
+- Create a Cloud PostgreSQL DB and copy the pooling connection string to the backend configuration.
 
-### 1. Database Provisioning (Neon / Supabase PostgreSQL)
-- Register a free database instance on [Neon.tech](https://neon.tech) or [Supabase.com](https://supabase.com).
-- Copy the transaction pooled database connection string. It should look like:
-  `postgresql://[user]:[password]@[host]/[dbname]?sslmode=require`
+### Backend (Render / Railway)
+- **Root Directory**: `backend`
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npx prisma db push && npm run db:seed && node dist/src/server.js`
+- **Env Vars**: Set `DATABASE_URL`, `JWT_SECRET`, and `NODE_ENV=production`.
+- **Health Check Endpoint**: Pings **`GET /health`** to assert container status.
 
-### 2. Backend API Deployment (Render / Railway)
-- **Render Setup**:
-  - Create a new **Web Service** on Render and map it to your repository.
-  - **Root Directory**: `backend`
-  - **Environment**: `Node`
-  - **Build Command**: `npm install && npm run build`
-  - **Start Command**: `npx prisma db push && npm run db:seed && node dist/src/server.js` (automatically pushes schemas and seeds default system roles on deployment).
-  - **Environment Variables**:
-    - `NODE_ENV`: `production`
-    - `DATABASE_URL`: `[your pooled postgresql connection string]`
-    - `JWT_SECRET`: `[generate a secure random 32-character string]`
-    - `PORT`: `5000`
-  - Confirm the backend starts successfully by hitting the **`/health`** check endpoint.
-
-### 3. Frontend SPA Deployment (Vercel / Netlify)
-- **Vercel Setup**:
-  - Connect Vercel to your repository.
-  - **Root Directory**: `frontend`
-  - **Framework Preset**: `Vite`
-  - **Build Command**: `npm run build`
-  - **Output Directory**: `dist`
-  - **Environment Variables**:
-    - `VITE_API_URL`: `https://[your-backend-render-app].onrender.com/api/v1`
-  - Vercel automatically applies the URL rewriting rules in [vercel.json](file:///c:/Users/Jenish/Desktop/Mini%20ERP/frontend/vercel.json) for React Router path fallbacks.
+### Frontend (Vercel / Netlify)
+- **Root Directory**: `frontend`
+- **Framework Preset**: `Vite`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Env Vars**: Set `VITE_API_URL` to your backend endpoint (e.g. `https://api-minierp.onrender.com/api/v1`).
+- Vercel reads [vercel.json](file:///c:/Users/Jenish/Desktop/Mini%20ERP/frontend/vercel.json) to configure SPA routing rewrites.
 
 ---
 
-## ⚠️ Known Limitations
-1. **Product Images**: Product image uploading requires AWS S3 bucket configurations. For the scope of this case study, products are cataloged via SKU and categories.
-2. **Soft Deletes**: Deleting products/customers performs hard deletions from tables, though cascade policies (such as `SET NULL` on Challan line items) prevent historical data corruption.
-
----
-
-## 🔒 Security Audit & Implementation Details
-
-To ensure the ERP satisfies standard enterprise security criteria, the application implements a strict zero-trust operational model:
-
-### 🔑 1. Session Token and Cryptography (JWT & Bcrypt)
-- **Token Signatures**: Session tokens are signed using high-entropy secret keys (`JWT_SECRET`) loaded dynamically via environment configurations. Tokens carry a `24-hour` expiry threshold.
-- **Payload Safety**: JWT payloads encode only public identifiers (`id`, `email`, `role`). Sensitive parameters (like hashes or credentials) are never stored in tokens.
-- **Passwords Storage**: Stored exclusively as one-way Bcrypt hashes using salt rounds of `10`. Unhashed passwords are never written to disk or logs.
-
-### 🛡️ 2. Role-Based Access Barriers (RBAC Middleware)
-- **Backend Authorization**: Implements double-barrier middleware checks. Even if an unauthorized user makes raw curl requests directly to the API (bypassing frontend hides), the `authorize([allowedRoles])` middleware rejects the request with a `403 Forbidden` response.
-- **Access Segregation**:
-  - `Warehouse` personnel have `0` access to customer directories and challan creators.
-  - `Sales` personnel cannot delete records, view dashboard financial revenues, or override inventory catalogs.
-  - `Accountants` are blocked from modifying customer profiles, editing stock directly, or creating challans, but have exclusive authority to cancel confirmed challans.
-- **Frontend Route Protection**: Child pages (e.g. `/customers`, `/challans/new`) are protected by route-level validation blocks. If a user bypasses navigation links by modifying the address bar URL, the router intercepts and redirects to an Access Denied view.
-
-### 🔬 3. Parameters Validation & Attack Mitigations
-- **SQL Injections**: Avoids raw string interpolations in SQL scripts. Prisma ORM parameterizes all variables automatically, and row locks on products are verified using raw query arguments protected by ES6 tag expressions.
-- **ID Manipulation Protection**: Express validates all incoming parameters (like Customer UUID, Product UUID) against Zod UUID format restrictions. Malformed parameters are rejected immediately with `400 Bad Request` prior to database queries, preventing database error leakage.
-- **Double Confirmation Protection**: To prevent double-cancellations or double-confirmations of Challans, the controller verifies current statuses (`DRAFT` for confirmations, `CONFIRMED` for cancellations) inside atomic transaction blocks before altering inventory levels.
-- **Safe Database Outages (Prisma Interceptor)**: Unhandled DB connection outages or duplicate constraint violations are formatted by a centralized error filter. It converts database-specific warnings into clear HTTP payloads (`409 Conflict`, `400 Bad Request`) while completely stripping table structures, internal indexes, and raw SQL queries from the response.
+## 📝 10. Assumptions & Limitations
+- **AWS S3**: Catalog product photos are simulated via category tags (production photo uploads require AWS S3 configurations).
+- **Soft Deletes**: Deletions perform database hard deletes, though cascade constraints (SET NULL) prevent historical data corruption.
