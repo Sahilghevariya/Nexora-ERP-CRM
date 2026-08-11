@@ -1,6 +1,6 @@
 # API Testing Guide - REST endpoints
 
-This guide outlines how to interact with the Mini ERP + CRM REST APIs using standard client requests (like `cURL`, Postman, or Thunder Client).
+This guide outlines how to interact with the Nexora — ERP & CRM REST APIs using standard client requests (like `cURL`, Postman, or Thunder Client).
 
 All endpoints are prefixed with `/api/v1`.
 

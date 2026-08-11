@@ -70,10 +70,10 @@ export const Login: React.FC = () => {
         <div style={{ textAlign: 'center' }}>
           <span style={{ fontSize: '3rem' }}>⚡</span>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, marginTop: '1rem', background: 'linear-gradient(135deg, #a5b4fc, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Apex Portal
+            Nexora
           </h1>
           <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-            Mini ERP + CRM Operations Suite
+            ERP & CRM Operations Portal
           </p>
         </div>
 

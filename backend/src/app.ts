@@ -24,7 +24,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Mini ERP + CRM Operations Portal API Server is running.',
+    message: 'Nexora — ERP & CRM Operations Portal API Server is running.',
   });
 });
 

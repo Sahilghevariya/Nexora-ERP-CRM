@@ -27,10 +27,10 @@ export const generateChallanPDF = (challan: any, writeStream: NodeJS.WritableStr
   doc
     .fillColor('#1e293b')
     .fontSize(20)
-    .text('MINI ERP + CRM OPERATIONS PORTAL', 50, 45)
+    .text('NEXORA — ERP & CRM OPERATIONS PORTAL', 50, 45)
     .fontSize(10)
     .text('123 Business Avenue, Suite 500', 50, 70)
-    .text('Mumbai, MH, 400001 | contact@minierp.com', 50, 85)
+    .text('Mumbai, MH, 400001 | contact@nexora.com', 50, 85)
     .moveDown();
 
   // Document Title Badge

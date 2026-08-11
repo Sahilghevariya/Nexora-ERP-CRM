@@ -1,4 +1,4 @@
-# Mini ERP + CRM Operations Portal
+# Nexora — ERP & CRM Operations Portal
 ### *Full-Stack Developer Case-Study Submission*
 
 An enterprise-grade, role-based internal operations portal designed to solve core business problems in Customer Relationship Management (CRM), Catalog Management, Warehouse Inventories, and Sales Challan transactional workflow processing.
@@ -12,7 +12,7 @@ Many growing retail and wholesale businesses struggle with disconnected spreadsh
 - **Race Conditions**: Parallel billing clerks decrementing stock concurrently, causing negative inventory totals.
 - **Historical Loss**: Invoices changing retrospectively when customer metadata or product prices change.
 
-This **Mini ERP + CRM Portal** solves these issues through a decoupled, multi-role web application utilizing atomic row locks, transactional database safeguards, custom PDF invoice generators, and a responsive operations dashboard.
+This **Nexora Portal** solves these issues through a decoupled, multi-role web application utilizing atomic row locks, transactional database safeguards, custom PDF invoice generators, and a responsive operations dashboard.
 
 ---
 
@@ -57,7 +57,7 @@ For easy local testing, the database seeder creates four default accounts matchi
 
 ### Decoupled Repository Structure
 ```
-Mini ERP/
+Nexora/
 ├── backend/            # Layered Express Node.js application
 │   ├── src/
 │   │   ├── __tests__/  # Automated Jest Integration Test suites

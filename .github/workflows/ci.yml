@@ -1,4 +1,4 @@
-name: Mini ERP Continuous Integration
+name: Nexora Continuous Integration
 
 on:
   push:

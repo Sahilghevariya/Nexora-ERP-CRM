@@ -73,8 +73,8 @@ export const DashboardShell: React.FC = () => {
         }}>
           <span style={{ fontSize: '1.5rem' }}>⚡</span>
           <div>
-            <h1 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.5px' }}>Apex Operations</h1>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ERP + CRM v1.0</span>
+            <h1 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.5px' }}>NEXORA</h1>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ERP & CRM Portal</span>
           </div>
         </div>
 
