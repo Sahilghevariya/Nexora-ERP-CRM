@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
+import { AddIcon, DeleteIcon } from '../components/Icons';
 
 interface CartItem {
   productId: string;
@@ -191,7 +192,7 @@ export const ChallanCreate: React.FC = () => {
 
       {errorMsg && (
         <div style={{ backgroundColor: 'var(--danger-bg)', color: 'var(--danger)', padding: '1rem', borderRadius: 'var(--radius-md)', fontSize: '0.9rem' }}>
-          <span style={{ fontWeight: 700 }}>⚠️ Alert:</span> {errorMsg}
+          <span style={{ fontWeight: 700 }}>Alert:</span> {errorMsg}
           {deficits.length > 0 && (
             <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
               {deficits.map((def, idx) => (
@@ -265,10 +266,10 @@ export const ChallanCreate: React.FC = () => {
                     <div style={{ fontWeight: 700, color: 'var(--primary-hover)' }}>₹ {Number(p.unitPrice).toFixed(2)}</div>
                     <button
                       className="btn btn-secondary"
-                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                      style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                       onClick={() => handleAddToCart(p)}
                     >
-                      ➕ Add
+                      <AddIcon size={12} /> Add
                     </button>
                   </div>
                 </div>
@@ -280,7 +281,7 @@ export const ChallanCreate: React.FC = () => {
         {/* Right column: Cart overview panel */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '90px' }}>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 600, borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-            🛒 Cart Review
+            Cart Review
           </h3>
 
           {cart.length === 0 ? (
@@ -315,10 +316,13 @@ export const ChallanCreate: React.FC = () => {
                           border: 'none',
                           color: 'var(--danger)',
                           cursor: 'pointer',
-                          fontSize: '1rem'
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '0.2rem'
                         }}
                       >
-                        🗑️
+                        <DeleteIcon size={16} />
                       </button>
                     </div>
 
@@ -380,7 +384,7 @@ export const ChallanCreate: React.FC = () => {
                   disabled={isSubmitting}
                   style={{ width: '100%' }}
                 >
-                  🚀 Save & Confirm (Deduct Inventory)
+                  Save & Confirm (Deduct Inventory)
                 </button>
                 <button
                   className="btn btn-secondary"
@@ -388,7 +392,7 @@ export const ChallanCreate: React.FC = () => {
                   disabled={isSubmitting}
                   style={{ width: '100%' }}
                 >
-                  💾 Save as Draft
+                  Save as Draft
                 </button>
               </div>
             </div>

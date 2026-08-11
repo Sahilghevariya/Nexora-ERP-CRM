@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { ProductIcon, UsersIcon, ChallanIcon } from '../components/Icons';
 
 export const Overview: React.FC = () => {
   const { user } = useAuth();
@@ -35,8 +36,8 @@ export const Overview: React.FC = () => {
 
   if (error || !stats) {
     return (
-      <div className="card" style={{ border: '1px solid rgba(239, 68, 68, 0.3)', padding: '2rem', textAlign: 'center' }}>
-        <h3 style={{ color: 'var(--danger)', marginBottom: '0.5rem' }}>⚠️ Dashboard Error</h3>
+      <div className="card" style={{ border: '1px solid var(--danger)', padding: '2rem', textAlign: 'center' }}>
+        <h3 style={{ color: 'var(--danger)', marginBottom: '0.5rem' }}>Dashboard Error</h3>
         <p style={{ color: 'var(--text-secondary)' }}>{error || 'Failed to load stats.'}</p>
         <button className="btn btn-secondary" style={{ marginTop: '1rem' }} onClick={fetchDashboardStats}>
           Retry Load
@@ -53,15 +54,13 @@ export const Overview: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Welcome Banner */}
       <div className="card" style={{
-        background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(99, 102, 241, 0.04))',
-        padding: '1.75rem 2rem',
-        borderRadius: 'var(--radius-lg)'
+        padding: '1.5rem 2rem',
       }}>
-        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '0.4rem' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.4rem' }}>
           Welcome back, {user?.name}!
         </h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.925rem' }}>
-          Logged in as: <strong style={{ color: 'var(--primary-hover)', textTransform: 'capitalize' }}>{user?.role.toLowerCase()}</strong>. View real-time database details below.
+          Logged in as: <strong style={{ color: 'var(--primary)', textTransform: 'capitalize' }}>{user?.role.toLowerCase()}</strong>. View real-time database details below.
         </p>
       </div>
 
@@ -73,8 +72,8 @@ export const Overview: React.FC = () => {
       }}>
         {/* Products KPI */}
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--info-bg)', display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-            📦
+          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--info-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ProductIcon size={22} stroke="var(--info)" />
           </div>
           <div>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
@@ -90,8 +89,8 @@ export const Overview: React.FC = () => {
         {/* CRM Customers KPI (Admins, Accounts, Sales only) */}
         {!isWarehouseUser && (
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-              👥
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <UsersIcon size={22} stroke="var(--primary)" />
             </div>
             <div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
@@ -108,8 +107,8 @@ export const Overview: React.FC = () => {
         {/* Challans KPI (Admins, Accounts, Sales only) */}
         {showChallans && (
           <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--warning-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-              🧾
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--warning-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ChallanIcon size={22} stroke="var(--warning)" />
             </div>
             <div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
@@ -125,9 +124,9 @@ export const Overview: React.FC = () => {
 
         {/* Revenue KPI (Admins & Accounts only) */}
         {showFinancials && (
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(255,255,255,0))', borderColor: 'rgba(16, 185, 129, 0.2)' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-              💰
+          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ChallanIcon size={22} stroke="var(--success)" />
             </div>
             <div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
@@ -152,10 +151,10 @@ export const Overview: React.FC = () => {
       }}>
         {/* Low Stock Panel */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>⚠️ Critical Safety Stock Alerts</h3>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Critical Safety Stock Alerts</h3>
           {stats.products.criticalList.length === 0 ? (
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', padding: '1rem 0' }}>
-              🎉 Safety check: No items are currently below safety thresholds!
+              Safety check: No items are currently below safety thresholds!
             </p>
           ) : (
             <div className="table-container">
@@ -182,13 +181,13 @@ export const Overview: React.FC = () => {
             </div>
           )}
           <Link to="/inventory" style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', textAlign: 'right', marginTop: 'auto' }}>
-            Open catalog database →
+            Open catalog database &rarr;
           </Link>
         </div>
 
         {/* Movements Ledger */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>📜 Chronological Stock Adjustments</h3>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Chronological Stock Adjustments</h3>
           {stats.recentMovements.length === 0 ? (
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', padding: '1rem 0' }}>
               No inventory changes logged in database.
@@ -227,7 +226,7 @@ export const Overview: React.FC = () => {
             </div>
           )}
           <Link to="/stock-ledger" style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', textAlign: 'right', marginTop: 'auto' }}>
-            Open audit ledger →
+            Open audit ledger &rarr;
           </Link>
         </div>
       </div>
@@ -235,7 +234,7 @@ export const Overview: React.FC = () => {
       {/* Bottom Row: Recent Challans (Only for Sales, Admin, Accounts) */}
       {showChallans && (
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>🧾 Recent Invoices & Challans</h3>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Recent Invoices & Challans</h3>
           {stats.recentChallans.length === 0 ? (
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', padding: '1rem' }}>
               No Sales Challans recorded.
@@ -277,7 +276,7 @@ export const Overview: React.FC = () => {
             </div>
           )}
           <Link to="/challans" style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', textAlign: 'right' }}>
-            Open challans ledger →
+            Open challans ledger &rarr;
           </Link>
         </div>
       )}

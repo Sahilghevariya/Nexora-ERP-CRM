@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { AddIcon } from '../components/Icons';
 
 export const ChallanList: React.FC = () => {
   const { hasRole } = useAuth();
@@ -150,8 +151,8 @@ export const ChallanList: React.FC = () => {
         </div>
 
         {hasRole(['ADMIN', 'SALES']) && (
-          <Link to="/challans/new" className="btn btn-primary">
-            ➕ Create Sales Challan
+          <Link to="/challans/new" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <AddIcon size={16} /> Create Sales Challan
           </Link>
         )}
       </div>
@@ -161,7 +162,7 @@ export const ChallanList: React.FC = () => {
         <div style={{ color: 'var(--text-secondary)' }}>Loading Challans...</div>
       ) : challans.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
-          🧾 No Sales Challans found matching filters.
+          No Sales Challans found matching filters.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -205,14 +206,14 @@ export const ChallanList: React.FC = () => {
                           style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
                           onClick={() => handleOpenDetail(c.id)}
                         >
-                          👁️ View
+                          View
                         </button>
                         <button
                           className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', backgroundColor: 'var(--info-bg)', color: 'var(--info)' }}
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
                           onClick={() => handleDownloadPDF(c.id, c.challanNumber)}
                         >
-                          📄 PDF
+                          PDF
                         </button>
                       </div>
                     </td>
@@ -292,7 +293,7 @@ export const ChallanList: React.FC = () => {
             {/* Error alerts */}
             {actionError && (
               <div style={{ backgroundColor: 'var(--danger-bg)', color: 'var(--danger)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}>
-                <span style={{ fontWeight: 600 }}>⚠️ Error:</span> {actionError}
+                <span style={{ fontWeight: 600 }}>Error:</span> {actionError}
                 {actionDeficits.length > 0 && (
                   <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
                     {actionDeficits.map((def, i) => (

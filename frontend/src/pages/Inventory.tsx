@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { EditIcon, DeleteIcon, AddIcon } from '../components/Icons';
 
 export const Inventory: React.FC = () => {
   const { hasRole } = useAuth();
@@ -216,7 +217,7 @@ export const Inventory: React.FC = () => {
           fontSize: '0.9rem',
           fontWeight: 600
         }}>
-          ✅ {successMsg}
+          {successMsg}
         </div>
       )}
 
@@ -240,8 +241,8 @@ export const Inventory: React.FC = () => {
         </div>
 
         {canEdit && (
-          <button className="btn btn-primary" onClick={handleOpenProductCreate}>
-            ➕ Add Product
+          <button className="btn btn-primary" onClick={handleOpenProductCreate} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <AddIcon size={16} /> Add Product
           </button>
         )}
       </div>
@@ -287,15 +288,15 @@ export const Inventory: React.FC = () => {
                           </div>
                         )}
                       </td>
-                      <td>📍 {p.locationWarehouse}</td>
+                      <td>{p.locationWarehouse}</td>
                       <td>
                         <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
                           <button
                             className="btn btn-secondary"
-                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', backgroundColor: 'var(--info-bg)', color: 'var(--info)' }}
+                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
                             onClick={() => handleOpenProductDetails(p)}
                           >
-                            👁️ View
+                            View
                           </button>
                           {canEdit && (
                             <button
@@ -303,25 +304,25 @@ export const Inventory: React.FC = () => {
                               style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
                               onClick={() => handleOpenAdjustStock(p)}
                             >
-                              ⚙️ Adjust Stock
+                              Adjust Stock
                             </button>
                           )}
                           {canEdit && (
                             <button
                               className="btn btn-secondary"
-                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                               onClick={() => handleOpenProductEdit(p)}
                             >
-                              ✏️ Edit
+                              <EditIcon size={12} /> Edit
                             </button>
                           )}
                           {hasRole(['ADMIN']) && (
                             <button
                               className="btn btn-danger"
-                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                              style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                               onClick={() => handleDeleteProduct(p.id)}
                             >
-                              🗑️ Delete
+                              <DeleteIcon size={12} /> Delete
                             </button>
                           )}
                         </div>
@@ -716,7 +717,7 @@ export const Inventory: React.FC = () => {
                     handleOpenProductEdit(selectedProduct);
                   }}
                 >
-                  ✏️ Edit Catalog
+                  Edit Catalog
                 </button>
               )}
             </div>

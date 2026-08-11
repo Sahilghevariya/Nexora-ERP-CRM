@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import type { Role } from '../../context/AuthContext';
+import { DashboardIcon, UsersIcon, InventoryIcon, LedgerIcon, ChallanIcon } from '../Icons';
 
 export const DashboardShell: React.FC = () => {
   const { user, logout, hasRole } = useAuth();
@@ -13,31 +14,31 @@ export const DashboardShell: React.FC = () => {
       label: 'Overview',
       path: '/dashboard',
       roles: ['ADMIN', 'SALES', 'ACCOUNTS'] as Role[],
-      icon: '📊',
+      icon: <DashboardIcon size={18} />,
     },
     {
       label: 'CRM Operations',
       path: '/customers',
       roles: ['ADMIN', 'SALES', 'ACCOUNTS'] as Role[],
-      icon: '👥',
+      icon: <UsersIcon size={18} />,
     },
     {
       label: 'Inventory',
       path: '/inventory',
       roles: ['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS'] as Role[],
-      icon: '📦',
+      icon: <InventoryIcon size={18} />,
     },
     {
       label: 'Stock Ledger',
       path: '/stock-ledger',
       roles: ['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS'] as Role[],
-      icon: '📜',
+      icon: <LedgerIcon size={18} />,
     },
     {
       label: 'Sales Challans',
       path: '/challans',
       roles: ['ADMIN', 'SALES', 'ACCOUNTS', 'WAREHOUSE'] as Role[],
-      icon: '🧾',
+      icon: <ChallanIcon size={18} />,
     },
   ];
 
@@ -53,8 +54,8 @@ export const DashboardShell: React.FC = () => {
       {/* Sidebar Desktop */}
       <aside style={{
         width: '260px',
-        backgroundColor: '#1E3A5F',
-        borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+        backgroundColor: 'var(--bg-secondary)',
+        borderRight: '1px solid var(--border-color)',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -66,15 +67,14 @@ export const DashboardShell: React.FC = () => {
         {/* Brand */}
         <div style={{
           padding: '1.5rem',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem'
         }}>
-          <span style={{ fontSize: '1.5rem' }}>⚡</span>
           <div>
-            <h1 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.5px', color: '#ffffff' }}>NEXORA</h1>
-            <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>ERP & CRM Portal</span>
+            <h1 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '0.5px', color: 'var(--text-primary)' }}>NEXORA</h1>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>ERP & CRM</span>
           </div>
         </div>
 
@@ -111,26 +111,26 @@ export const DashboardShell: React.FC = () => {
         {/* User Info Bottom */}
         <div style={{
           padding: '1.25rem',
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          backgroundColor: 'rgba(0,0,0,0.15)'
+          borderTop: '1px solid var(--border-color)',
+          backgroundColor: 'var(--bg-tertiary)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 600,
-              color: '#ffffff'
+              color: 'var(--primary)'
             }}>
               {user?.name.charAt(0)}
             </div>
             <div style={{ overflow: 'hidden' }}>
-              <h4 style={{ fontSize: '0.85rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#ffffff' }}>{user?.name}</h4>
+              <h4 style={{ fontSize: '0.85rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-primary)' }}>{user?.name}</h4>
               <span className={`badge ${
                 user?.role === 'ADMIN' ? 'badge-danger' : user?.role === 'SALES' ? 'badge-success' : user?.role === 'WAREHOUSE' ? 'badge-info' : 'badge-warning'
               }`} style={{ fontSize: '0.6rem', padding: '0.1rem 0.4rem', marginTop: '0.2rem' }}>
@@ -143,8 +143,8 @@ export const DashboardShell: React.FC = () => {
             style={{
               width: '100%',
               backgroundColor: 'transparent',
-              color: '#f87171',
-              border: '1px solid rgba(248, 113, 113, 0.3)',
+              color: 'var(--danger)',
+              border: '1px solid var(--border-color)',
               borderRadius: 'var(--radius-sm)',
               padding: '0.5rem',
               fontSize: '0.8rem',
@@ -157,13 +157,15 @@ export const DashboardShell: React.FC = () => {
               transition: 'all 0.15s ease'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
+              e.currentTarget.style.backgroundColor = 'var(--danger-bg)';
+              e.currentTarget.style.borderColor = 'rgba(185, 28, 28, 0.2)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = 'var(--border-color)';
             }}
           >
-            🚪 Logout
+            Logout
           </button>
         </div>
       </aside>
@@ -196,7 +198,7 @@ export const DashboardShell: React.FC = () => {
             {/* Quick Actions */}
             {hasRole(['ADMIN', 'SALES']) && (
               <Link to="/challans/new" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                ➕ Create Challan
+                Create Challan
               </Link>
             )}
             <div style={{

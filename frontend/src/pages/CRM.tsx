@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { EditIcon, DeleteIcon, AddIcon } from '../components/Icons';
 
 export const CRM: React.FC = () => {
   const { hasRole } = useAuth();
@@ -157,7 +158,7 @@ export const CRM: React.FC = () => {
           fontSize: '0.9rem',
           fontWeight: 600
         }}>
-          ✅ {successMsg}
+          {successMsg}
         </div>
       )}
 
@@ -186,8 +187,8 @@ export const CRM: React.FC = () => {
         </div>
 
         {canEdit && (
-          <button className="btn btn-primary" onClick={handleOpenCreateModal}>
-            ➕ Add Customer
+          <button className="btn btn-primary" onClick={handleOpenCreateModal} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <AddIcon size={16} /> Add Customer
           </button>
         )}
       </div>
@@ -197,7 +198,7 @@ export const CRM: React.FC = () => {
         <div style={{ color: 'var(--text-secondary)' }}>Loading customer logs...</div>
       ) : customers.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
-          🔍 No customer profiles found matching filters.
+          No customer profiles found matching filters.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -222,8 +223,8 @@ export const CRM: React.FC = () => {
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Created by: {c.createdBy?.name}</div>
                     </td>
                     <td>
-                      <div>📞 {c.mobile}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>✉️ {c.email}</div>
+                      <div style={{ fontSize: '0.9rem' }}>{c.mobile}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{c.email}</div>
                     </td>
                     <td>
                       <div style={{ fontWeight: 500 }}>{c.businessName}</div>
@@ -247,7 +248,7 @@ export const CRM: React.FC = () => {
                           color: new Date(c.followUpDate) <= new Date() ? 'var(--warning)' : 'var(--text-primary)',
                           fontWeight: new Date(c.followUpDate) <= new Date() ? 600 : 400
                         }}>
-                          📅 {new Date(c.followUpDate).toLocaleDateString()}
+                          {new Date(c.followUpDate).toLocaleDateString()}
                         </div>
                       ) : (
                         <span style={{ color: 'var(--text-muted)' }}>-</span>
@@ -257,27 +258,27 @@ export const CRM: React.FC = () => {
                       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
                         <button
                           className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', backgroundColor: 'var(--info-bg)', color: 'var(--info)' }}
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                           onClick={() => { setSelectedCustomer(c); setIsDetailModalOpen(true); }}
                         >
-                          👁️ View
+                          View
                         </button>
                         {canEdit && (
                           <button
                             className="btn btn-secondary"
-                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                             onClick={() => handleOpenEditModal(c)}
                           >
-                            ✏️ Edit
+                            <EditIcon size={12} /> Edit
                           </button>
                         )}
                         {canDelete && (
                           <button
                             className="btn btn-danger"
-                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                             onClick={() => handleDelete(c.id)}
                           >
-                            🗑️ Delete
+                            <DeleteIcon size={12} /> Delete
                           </button>
                         )}
                       </div>

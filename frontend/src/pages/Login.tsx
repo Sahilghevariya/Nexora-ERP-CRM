@@ -68,11 +68,10 @@ export const Login: React.FC = () => {
       }}>
         {/* Brand Header */}
         <div style={{ textAlign: 'center' }}>
-          <span style={{ fontSize: '3rem' }}>⚡</span>
-          <h1 style={{ fontSize: '2.25rem', fontWeight: 700, marginTop: '0.75rem', color: '#1e3a5f' }}>
-            Nexora
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.5px' }}>
+            NEXORA
           </h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem', fontSize: '0.95rem' }}>
             ERP & CRM Operations Portal
           </p>
         </div>
@@ -94,7 +93,7 @@ export const Login: React.FC = () => {
               marginBottom: '1.25rem',
               fontWeight: 500
             }}>
-              ⚠️ {error}
+              {error}
             </div>
           )}
 

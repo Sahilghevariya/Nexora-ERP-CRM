@@ -30,7 +30,7 @@ export const StockLedger: React.FC = () => {
       {/* Intro info box */}
       <div className="card">
         <h3 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.4rem' }}>
-          🛡️ Stock Movement Audit Log
+          Stock Movement Audit Log
         </h3>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
           This log record is write-once and acts as the single source of truth ledger tracking all manual and sales-driven inventory modifications.
@@ -42,7 +42,7 @@ export const StockLedger: React.FC = () => {
         <div style={{ color: 'var(--text-secondary)' }}>Loading ledger...</div>
       ) : movements.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
-          📜 Ledger is empty. No inventory activities logged.
+          Ledger is empty. No inventory activities logged.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
