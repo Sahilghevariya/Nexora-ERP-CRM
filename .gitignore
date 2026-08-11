@@ -36,4 +36,4 @@ lerna-debug.log*
 Thumbs.db
 
 # Prisma generated folders (if not using node_modules)
-/backend/prisma/migrations/
+# (Do not ignore migrations folder for production deployment)
