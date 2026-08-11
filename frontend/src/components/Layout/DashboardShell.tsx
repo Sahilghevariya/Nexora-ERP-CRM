@@ -53,8 +53,8 @@ export const DashboardShell: React.FC = () => {
       {/* Sidebar Desktop */}
       <aside style={{
         width: '260px',
-        backgroundColor: 'var(--bg-secondary)',
-        borderRight: '1px solid var(--border-color)',
+        backgroundColor: '#1E3A5F',
+        borderRight: '1px solid rgba(255, 255, 255, 0.08)',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -66,15 +66,15 @@ export const DashboardShell: React.FC = () => {
         {/* Brand */}
         <div style={{
           padding: '1.5rem',
-          borderBottom: '1px solid var(--border-color)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem'
         }}>
           <span style={{ fontSize: '1.5rem' }}>⚡</span>
           <div>
-            <h1 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.5px' }}>NEXORA</h1>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ERP & CRM Portal</span>
+            <h1 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.5px', color: '#ffffff' }}>NEXORA</h1>
+            <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>ERP & CRM Portal</span>
           </div>
         </div>
 
@@ -95,13 +95,11 @@ export const DashboardShell: React.FC = () => {
                   gap: '0.75rem',
                   padding: '0.85rem 1rem',
                   borderRadius: 'var(--radius-sm)',
-                  color: isActive ? 'white' : 'var(--text-secondary)',
-                  backgroundColor: isActive ? 'var(--primary)' : 'transparent',
                   fontWeight: isActive ? 600 : 500,
                   fontSize: '0.925rem',
                   transition: 'all var(--transition-fast)',
                 }}
-                className="nav-link-item"
+                className={`nav-link-item ${isActive ? 'active' : ''}`}
               >
                 <span>{item.icon}</span>
                 {item.label}
@@ -113,26 +111,26 @@ export const DashboardShell: React.FC = () => {
         {/* User Info Bottom */}
         <div style={{
           padding: '1.25rem',
-          borderTop: '1px solid var(--border-color)',
-          backgroundColor: 'rgba(0,0,0,0.1)'
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          backgroundColor: 'rgba(0,0,0,0.15)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '50%',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: '1px solid var(--border-color)',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 600,
-              color: 'var(--primary-hover)'
+              color: '#ffffff'
             }}>
               {user?.name.charAt(0)}
             </div>
             <div style={{ overflow: 'hidden' }}>
-              <h4 style={{ fontSize: '0.85rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</h4>
+              <h4 style={{ fontSize: '0.85rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#ffffff' }}>{user?.name}</h4>
               <span className={`badge ${
                 user?.role === 'ADMIN' ? 'badge-danger' : user?.role === 'SALES' ? 'badge-success' : user?.role === 'WAREHOUSE' ? 'badge-info' : 'badge-warning'
               }`} style={{ fontSize: '0.6rem', padding: '0.1rem 0.4rem', marginTop: '0.2rem' }}>
@@ -145,8 +143,8 @@ export const DashboardShell: React.FC = () => {
             style={{
               width: '100%',
               backgroundColor: 'transparent',
-              color: 'var(--danger)',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#f87171',
+              border: '1px solid rgba(248, 113, 113, 0.3)',
               borderRadius: 'var(--radius-sm)',
               padding: '0.5rem',
               fontSize: '0.8rem',
@@ -159,7 +157,7 @@ export const DashboardShell: React.FC = () => {
               transition: 'all 0.15s ease'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--danger-bg)';
+              e.currentTarget.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';

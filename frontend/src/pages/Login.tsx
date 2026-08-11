@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
         {/* Brand Header */}
         <div style={{ textAlign: 'center' }}>
           <span style={{ fontSize: '3rem' }}>⚡</span>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginTop: '1rem', background: 'linear-gradient(135deg, #a5b4fc, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 700, marginTop: '0.75rem', color: '#1e3a5f' }}>
             Nexora
           </h1>
           <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
@@ -159,7 +159,7 @@ export const Login: React.FC = () => {
                 className="preset-btn"
                 onMouseOver={(e) => {
                   e.currentTarget.style.borderColor = 'var(--primary)';
-                  e.currentTarget.style.backgroundColor = 'rgba(99, 102, 241, 0.05)';
+                  e.currentTarget.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.borderColor = 'var(--border-color)';
