@@ -35,7 +35,7 @@ function App() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             
             <Route path="dashboard" element={
-              <ProtectedRoute allowedRoles={['ADMIN', 'SALES', 'ACCOUNTS']}>
+              <ProtectedRoute allowedRoles={['ADMIN', 'SALES', 'WAREHOUSE', 'ACCOUNTS']}>
                 <Overview />
               </ProtectedRoute>
             } />
@@ -47,19 +47,19 @@ function App() {
             } />
             
             <Route path="inventory" element={
-              <ProtectedRoute allowedRoles={['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS']}>
+              <ProtectedRoute allowedRoles={['ADMIN', 'SALES', 'WAREHOUSE']}>
                 <Inventory />
               </ProtectedRoute>
             } />
             
             <Route path="stock-ledger" element={
-              <ProtectedRoute allowedRoles={['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS']}>
+              <ProtectedRoute allowedRoles={['ADMIN', 'WAREHOUSE']}>
                 <StockLedger />
               </ProtectedRoute>
             } />
             
             <Route path="challans" element={
-              <ProtectedRoute allowedRoles={['ADMIN', 'SALES', 'ACCOUNTS', 'WAREHOUSE']}>
+              <ProtectedRoute allowedRoles={['ADMIN', 'SALES', 'ACCOUNTS']}>
                 <ChallanList />
               </ProtectedRoute>
             } />

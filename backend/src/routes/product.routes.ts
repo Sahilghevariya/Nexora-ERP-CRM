@@ -11,8 +11,8 @@ const router = Router();
 // Protect all routes under /products
 router.use(authenticate);
 
-router.get('/', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), getProducts);
-router.get('/:id', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), getProductById);
+router.get('/', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE]), getProducts);
+router.get('/:id', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE]), getProductById);
 
 router.post('/', authorize([Role.ADMIN, Role.WAREHOUSE]), validate(productSchema), createProduct);
 router.put('/:id', authorize([Role.ADMIN, Role.WAREHOUSE]), validate(productSchema), updateProduct);

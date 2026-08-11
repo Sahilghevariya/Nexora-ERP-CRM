@@ -16,6 +16,7 @@ jest.mock('../config/db', () => ({
     },
     customer: {
       count: jest.fn(),
+      findMany: jest.fn(),
     },
     salesChallan: {
       count: jest.fn(),
@@ -65,6 +66,7 @@ describe('ERP Operational Dashboard API Tests', () => {
 
     mockPrismaChallan.findMany.mockResolvedValue([]);
     mockPrismaMovement.findMany.mockResolvedValue([]);
+    mockPrismaCustomer.findMany.mockResolvedValue([]);
 
     const res = await request(app)
       .get('/api/v1/dashboard/stats')
@@ -100,6 +102,7 @@ describe('ERP Operational Dashboard API Tests', () => {
 
     mockPrismaChallan.findMany.mockResolvedValue([]);
     mockPrismaMovement.findMany.mockResolvedValue([]);
+    mockPrismaCustomer.findMany.mockResolvedValue([]);
 
     const res = await request(app)
       .get('/api/v1/dashboard/stats')

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import type { Role } from '../context/AuthContext';
 
@@ -11,6 +11,7 @@ interface ProtectedRouteProps {
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
   const { isAuthenticated, user, isLoading, hasRole } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -59,11 +60,20 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
         textAlign: 'center',
         padding: '2rem'
       }}>
-        <h2 style={{ color: 'var(--danger)', fontSize: '2rem', marginBottom: '1rem' }}>Access Denied</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', maxWidth: '500px' }}>
-          Your current account role <strong>({user.role})</strong> does not have permission to view this page. If you believe this is an error, contact your administrator.
-        </p>
-        <Navigate to="/dashboard" replace />
+        <div className="card" style={{ maxWidth: '480px', width: '100%', padding: '2.5rem', border: '1px solid var(--border-color)' }}>
+          <h2 style={{ color: 'var(--danger)', fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>403</h2>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.75rem' }}>Access Denied</h3>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.9rem', lineHeight: '1.5' }}>
+            You do not have permission to access this page. Your role <strong>({user.role})</strong> is restricted from viewing this module.
+          </p>
+          <button
+            className="btn btn-primary"
+            style={{ width: '100%', padding: '0.65rem' }}
+            onClick={() => navigate('/dashboard')}
+          >
+            Return to Dashboard
+          </button>
+        </div>
       </div>
     );
   }

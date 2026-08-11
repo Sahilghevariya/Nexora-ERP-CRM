@@ -88,6 +88,29 @@ export const getDashboardStats = async (req: Request, res: Response, next: NextF
       },
     });
 
+    // 5. Fetch upcoming follow-up customers for Admin/Sales
+    let upcomingFollowUps: any[] = [];
+    if (userRole === Role.ADMIN || userRole === Role.SALES) {
+      upcomingFollowUps = await prisma.customer.findMany({
+        where: {
+          followUpDate: {
+            not: null
+          }
+        },
+        orderBy: {
+          followUpDate: 'asc'
+        },
+        take: 5,
+        select: {
+          id: true,
+          name: true,
+          businessName: true,
+          followUpDate: true,
+          notes: true
+        }
+      });
+    }
+
     res.status(200).json({
       success: true,
       data: {
@@ -101,6 +124,7 @@ export const getDashboardStats = async (req: Request, res: Response, next: NextF
         challans: challansStats,
         recentChallans,
         recentMovements,
+        upcomingFollowUps,
       },
     });
   } catch (error) {

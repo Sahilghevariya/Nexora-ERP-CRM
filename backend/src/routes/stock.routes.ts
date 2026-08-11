@@ -12,6 +12,6 @@ const router = Router();
 router.use(authenticate);
 
 router.post('/adjust', authorize([Role.ADMIN, Role.WAREHOUSE]), validate(stockAdjustSchema), adjustStock);
-router.get('/movements', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), getStockMovements);
+router.get('/movements', authorize([Role.ADMIN, Role.WAREHOUSE]), getStockMovements);
 
 export default router;

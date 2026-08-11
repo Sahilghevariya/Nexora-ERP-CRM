@@ -14,8 +14,8 @@ const router = Router();
 // Protect all routes under /challans
 router.use(authenticate);
 
-router.get('/', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), getChallans);
-router.get('/:id', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), getChallanById);
+router.get('/', authorize([Role.ADMIN, Role.SALES, Role.ACCOUNTS]), getChallans);
+router.get('/:id', authorize([Role.ADMIN, Role.SALES, Role.ACCOUNTS]), getChallanById);
 
 router.post('/', authorize([Role.ADMIN, Role.SALES]), validate(challanSchema), createChallan);
 router.put('/:id', authorize([Role.ADMIN, Role.SALES]), validate(challanSchema), updateChallan);
@@ -24,7 +24,7 @@ router.post('/:id/confirm', authorize([Role.ADMIN, Role.SALES]), confirmChallan)
 router.post('/:id/cancel', authorize([Role.ADMIN, Role.ACCOUNTS]), cancelChallan);
 
 // PDF Download Route
-router.get('/:id/pdf', authorize([Role.ADMIN, Role.SALES, Role.WAREHOUSE, Role.ACCOUNTS]), async (req, res, next) => {
+router.get('/:id/pdf', authorize([Role.ADMIN, Role.SALES, Role.ACCOUNTS]), async (req, res, next) => {
   try {
     const id = req.params.id as string;
 

@@ -13,7 +13,7 @@ export const DashboardShell: React.FC = () => {
     {
       label: 'Overview',
       path: '/dashboard',
-      roles: ['ADMIN', 'SALES', 'ACCOUNTS'] as Role[],
+      roles: ['ADMIN', 'SALES', 'WAREHOUSE', 'ACCOUNTS'] as Role[],
       icon: <DashboardIcon size={18} />,
     },
     {
@@ -25,19 +25,19 @@ export const DashboardShell: React.FC = () => {
     {
       label: 'Inventory',
       path: '/inventory',
-      roles: ['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS'] as Role[],
+      roles: ['ADMIN', 'WAREHOUSE', 'SALES'] as Role[],
       icon: <InventoryIcon size={18} />,
     },
     {
       label: 'Stock Ledger',
       path: '/stock-ledger',
-      roles: ['ADMIN', 'WAREHOUSE', 'SALES', 'ACCOUNTS'] as Role[],
+      roles: ['ADMIN', 'WAREHOUSE'] as Role[],
       icon: <LedgerIcon size={18} />,
     },
     {
       label: 'Sales Challans',
       path: '/challans',
-      roles: ['ADMIN', 'SALES', 'ACCOUNTS', 'WAREHOUSE'] as Role[],
+      roles: ['ADMIN', 'SALES', 'ACCOUNTS'] as Role[],
       icon: <ChallanIcon size={18} />,
     },
   ];
